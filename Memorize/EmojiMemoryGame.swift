@@ -12,8 +12,8 @@ class EmojiMemoryGame{
     private var model:MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
     
     static func createMemoryGame()-> MemoryGame<String>{
-        let emoji: Array<String> = ["🐰","🐷"]
-        return MemoryGame<String>(numberOfpairsOfCards: 2)
+        let emoji = ["🐰","🐷","🐹"]
+        return MemoryGame<String>(numberOfpairsOfCards: emoji.count)
             {(pairIndex: Int)  -> String in
             return emoji[pairIndex]
         }
@@ -24,6 +24,7 @@ class EmojiMemoryGame{
     var cards: Array<MemoryGame<String>.Card> {
         model.cards
     }
+    
     // mark: - intent(s)
     func choose(card:MemoryGame<String>.Card)  {
         model.choose(card: card)
