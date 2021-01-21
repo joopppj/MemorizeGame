@@ -20,7 +20,7 @@ struct EmojiMemoryGameView: View { // represent all cards stack
         }
         .padding()
         .foregroundColor(Color.red)
-        .font(Font.largeTitle)
+        .font(viewModel.cards.count < 5 ? Font.largeTitle : Font.body)
         //.aspectRatio(0.66,contentMode: .fit)
         
     }
