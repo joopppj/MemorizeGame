@@ -9,13 +9,13 @@
 import SwiftUI
 
 struct EmojiMemoryGameView: View { // represent all cards stack
-    var viewModel:EmojiMemoryGame
+    @ObservedObject  var viewModel:EmojiMemoryGame
     var body: some View {
         HStack{
             ForEach(viewModel.cards){ card in
                 CardView(card: card ).onTapGesture {
                     self.viewModel.choose(card: card)
-                }//.aspectRatio(0.66,contentMode: .fit)
+                }//.aspectRatio(0.66,contentMode: .fit) a1 question
             }.aspectRatio(0.66,contentMode: .fit)
         }
         .padding()
