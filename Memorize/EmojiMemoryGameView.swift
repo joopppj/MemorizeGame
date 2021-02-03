@@ -11,18 +11,15 @@ import SwiftUI
 struct EmojiMemoryGameView: View { // represent all cards stack
     @ObservedObject  var viewModel:EmojiMemoryGame
     var body: some View {
-        HStack{
-            ForEach(viewModel.cards){ card in
+        Grid(viewModel.cards){ card in
                 CardView(card: card ).onTapGesture {
                     self.viewModel.choose(card: card)
-                }//.aspectRatio(0.66,contentMode: .fit) a1 question
-            }.aspectRatio(0.66,contentMode: .fit)
-        }
-        .padding()
-        .foregroundColor(Color.red)
+            }.padding(5)//.aspectRatio(0.66,contentMode: .fit) a1 question
+            }//.aspectRatio(0.66,contentMode: .fit)
+            .padding()
+            .foregroundColor(Color.red)
     // .font(viewModel.cards.count < 5 ? Font.largeTitle : Font.body)
         //.aspectRatio(0.66,contentMode: .fit)
-        
     }
 }
 
@@ -59,3 +56,4 @@ struct ContentView_Previews: PreviewProvider {
         EmojiMemoryGameView(viewModel: EmojiMemoryGame())
     }
 }
+
