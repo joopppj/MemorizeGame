@@ -13,11 +13,15 @@ import Foundation
 struct MemoryGame<CardContent>{
     var cards: Array<Card>
     
+    var indexOfTheOneAndOnlyFaceUpCard: Int?
+    
     // since this is a struct, when we change self parameter, we get the copy we need to write mutating
     mutating func choose(card:Card){
         print("card chosen:\(card)")
-        let chosenIndex:Int = cards.firstIndex(matching: card)
-        self.cards[chosenIndex].isFaceUp = !self.cards[chosenIndex].isFaceUp // flip the card
+        if let chosenIndex:Int = cards.firstIndex(matching: card){ // if chosenIndex is nil , the code below will not excute
+            self.cards[chosenIndex].isFaceUp = !self.cards[chosenIndex].isFaceUp // flip the card
+        }
+        
     }
     
    
