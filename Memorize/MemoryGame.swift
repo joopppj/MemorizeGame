@@ -11,9 +11,9 @@
 import Foundation
 
 struct MemoryGame<CardContent> where CardContent: Equatable{
-    var cards: Array<Card>
+    private(set) var cards: Array<Card>
     
-    var indexOfTheOneAndOnlyFaceUpCard: Int? {
+    private var indexOfTheOneAndOnlyFaceUpCard: Int? {
         get {
            let faceUpCardIndices = cards.indices.filter { index in cards[index].isFaceUp}
             return faceUpCardIndices.only
@@ -25,7 +25,15 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
             }
         }
     }
-    
+    init(numberOfpairsOfCards:Int, cardContentFactory: (Int)->CardContent) {
+        self.cards = Array<Card>()
+        for pairIndex in 0..<numberOfpairsOfCards {
+            let content = cardContentFactory(pairIndex)
+            cards.append(Card( content: content,id:pairIndex*2))
+            cards.append(Card( content: content,id:pairIndex*2+1))
+        }
+        cards.shuffle()
+    }
     // since this is a struct, when we change self parameter, we get the copy we need to write mutating
     mutating func choose(card:Card){
         print("card chosen:\(card)")
@@ -46,17 +54,6 @@ struct MemoryGame<CardContent> where CardContent: Equatable{
             self.cards[chosenIndex].isFaceUp = true
         }
         
-    }
-    
-   
-    init(numberOfpairsOfCards:Int, cardContentFactory: (Int)->CardContent) {
-        self.cards = Array<Card>()
-        for pairIndex in 0..<numberOfpairsOfCards {
-            let content = cardContentFactory(pairIndex)
-            cards.append(Card( content: content,id:pairIndex*2))
-            cards.append(Card( content: content,id:pairIndex*2+1))
-        }
-        cards.shuffle()
     }
     
     struct Card: Identifiable {
