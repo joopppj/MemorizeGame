@@ -37,7 +37,7 @@ struct CardView: View{ // represent single card
             if self.card.isFaceUp{
                 RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
                 RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: self.edgeLineWidth)
-                Circle()
+                Pie(startAngle: Angle.init(degrees: 270), endAngle: Angle.init(degrees: 20), clockwise: true).padding(5).opacity(0.4)
                 Text(self.card.content)
             } else {
                 if !card.isMatched{
@@ -50,7 +50,7 @@ struct CardView: View{ // represent single card
     
     private let cornerRadius: CGFloat = 10.0
     private let edgeLineWidth: CGFloat = 3
-    private let fontScaleFactor: CGFloat = 0.76
+    private let fontScaleFactor: CGFloat = 0.7
 }
 
 
