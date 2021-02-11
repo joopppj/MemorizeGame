@@ -11,13 +11,21 @@ import SwiftUI
 struct EmojiMemoryGameView: View { // represent all cards stack
     @ObservedObject  var viewModel:EmojiMemoryGame
     var body: some View {
-        Grid(viewModel.cards){ card in
-                CardView(card: card ).onTapGesture {
-                    self.viewModel.choose(card: card)
-            }.padding(5)//.aspectRatio(0.66,contentMode: .fit) a1 question
+        VStack{
+            Grid(viewModel.cards){ card in
+                    CardView(card: card ).onTapGesture {
+                        self.viewModel.choose(card: card)
+                }.padding(5)//.aspectRatio(0.66,contentMode: .fit) a1 question
             }//.aspectRatio(0.66,contentMode: .fit)
-            .padding()
-            .foregroundColor(Color.red)
+                .padding()
+                .foregroundColor(Color.red)
+            Button(action: {
+                withAnimation(.easeInOut){
+                    self.viewModel.resetGame()
+                    
+                }
+            }, label: { Text("reset")})
+        }
     // .font(viewModel.cards.count < 5 ? Font.largeTitle : Font.body)
         //.aspectRatio(0.66,contentMode: .fit)
     }
@@ -38,8 +46,11 @@ struct CardView: View{ // represent single card
             ZStack {
                 Pie(startAngle: Angle.init(degrees: 270), endAngle: Angle.init(degrees: 20), clockwise: true).padding(5).opacity(0.4)
                 Text(self.card.content)
-            }.cardify(isFaceUp: card.isFaceUp)
-                .font(Font.system(size: min(size.width,size.height)*fontScaleFactor))
+                    .font(Font.system(size: min(size.width,size.height)*fontScaleFactor))
+                    .rotationEffect(Angle.degrees(card.isMatched ? 360: 0))
+                    .animation(card.isMatched ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default)
+            }
+            .cardify(isFaceUp: card.isFaceUp)
         }
     }
     // MARK: - Drawing Constants
