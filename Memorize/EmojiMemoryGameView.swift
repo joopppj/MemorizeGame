@@ -14,13 +14,15 @@ struct EmojiMemoryGameView: View { // represent all cards stack
         VStack{
             Grid(viewModel.cards){ card in
                     CardView(card: card ).onTapGesture {
-                        self.viewModel.choose(card: card)
+                        withAnimation(Animation.linear){
+                            self.viewModel.choose(card: card)
+                        }
                 }.padding(5)//.aspectRatio(0.66,contentMode: .fit) a1 question
             }//.aspectRatio(0.66,contentMode: .fit)
                 .padding()
                 .foregroundColor(Color.red)
             Button(action: {
-                withAnimation(.easeInOut){
+                withAnimation(.easeInOut){ // !!! animation two
                     self.viewModel.resetGame()
                     
                 }
@@ -48,9 +50,10 @@ struct CardView: View{ // represent single card
                 Text(self.card.content)
                     .font(Font.system(size: min(size.width,size.height)*fontScaleFactor))
                     .rotationEffect(Angle.degrees(card.isMatched ? 360: 0))
-                    .animation(card.isMatched ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default)
+                    .animation(card.isMatched ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default)// !!! animation three
             }
             .cardify(isFaceUp: card.isFaceUp)
+            .transition(AnyTransition.scale) // !!!animation one
         }
     }
     // MARK: - Drawing Constants
