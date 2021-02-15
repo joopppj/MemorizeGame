@@ -14,7 +14,7 @@ struct EmojiMemoryGameView: View { // represent all cards stack
         VStack{
             Grid(viewModel.cards){ card in
                     CardView(card: card ).onTapGesture {
-                        withAnimation(Animation.linear){
+                        withAnimation(Animation.linear(duration: 0.5)){
                             self.viewModel.choose(card: card)
                         }
                 }.padding(5)//.aspectRatio(0.66,contentMode: .fit) a1 question
@@ -42,11 +42,31 @@ struct CardView: View{ // represent single card
         }
     }
     
+    @State private var animatedBonusRemaning: Double = 0
+    
+    private func startBonusTimeAnimation(){
+        animatedBonusRemaning = card.bonusRemaining
+        withAnimation(.linear(duration:card.bonusTimeRemaining)){
+            animatedBonusRemaning = 0
+        }
+    }
+    
     @ViewBuilder
     private func body(for size: CGSize)-> some View{
         if card.isFaceUp || !card.isMatched {
             ZStack {
-                Pie(startAngle: Angle.init(degrees: 270), endAngle: Angle.init(degrees: 20), clockwise: true).padding(5).opacity(0.4)
+                Group{
+                    if card.isConsumingBonusTime{
+                        Pie(startAngle: Angle.init(degrees: -90), endAngle: Angle.init(degrees: -animatedBonusRemaning*360-90), clockwise: true)
+                            .onAppear{
+                                self.startBonusTimeAnimation()
+                            }
+                    } else {
+                        Pie(startAngle: Angle.init(degrees: -90), endAngle: Angle.init(degrees: -card.bonusRemaining*360-90), clockwise: true)
+                    }
+                }
+                .padding(5).opacity(0.4)
+                .transition(.scale)
                 Text(self.card.content)
                     .font(Font.system(size: min(size.width,size.height)*fontScaleFactor))
                     .rotationEffect(Angle.degrees(card.isMatched ? 360: 0))
