@@ -14,7 +14,7 @@ struct Cardify: AnimatableModifier {
     init(isFaceUp: Bool) {
         rotation = isFaceUp ? 0 : 180
     }
-    var isFaceUp: Bool {
+    var isFaceUp: Bool { // tracking current degree during animation
         rotation < 90
     }
     
@@ -40,7 +40,8 @@ struct Cardify: AnimatableModifier {
                 .opacity(isFaceUp ? 0 : 1)
             
         }
-        .rotation3DEffect(.degrees(rotation), axis: (0,1,0))
+        .rotation3DEffect(.degrees(rotation), axis: (1,0,0))
+        
     }
     private let cornerRadius: CGFloat = 10.0
     private let edgeLineWidth: CGFloat = 3
